@@ -15,7 +15,7 @@ import csv
 message = ""
 
 phone_nums_list = []
-with open("final_sheet.csv", 'r') as f:
+with open("phone_numbers.csv", 'r') as f:
     csv_reader = csv.reader(f)
     for row in csv_reader:
         phone_nums_list.append(row)
