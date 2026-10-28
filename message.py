@@ -38,9 +38,9 @@ def message_phones(phone_nums, message, img = None, driver_executable_path=None)
     options.add_argument("--disable-automation")
     options.add_argument("--headless")
     # Create an instance of Chrome WebDriver with undetected-chromedriver
-    driver = Chrome(options=options)
-    if not(driver_executable_path == None):
-        # Create an instance of Chrome WebDriver with undetected-chromedriver
+    if driver_executable_path is None:
+        driver = Chrome(options=options)
+    else:
         driver = Chrome(options=options,
                         driver_executable_path=driver_executable_path)
 

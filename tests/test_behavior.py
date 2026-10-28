@@ -14,6 +14,7 @@ def execute():
 
 def test_empty_contacts_close_browser_without_sending():
     module, browser = execute()
+    browser.Chrome.assert_called_once_with(options=browser.ChromeOptions.return_value)
     driver = browser.Chrome.return_value
     driver.quit.assert_called_once()
     driver.find_element.assert_not_called()
@@ -30,3 +31,14 @@ def test_message_is_typed_for_each_contact_and_browser_closed():
     typed = [call.args[0] for call in driver.find_element.return_value.send_keys.call_args_list]
     assert typed.count('test message') == 2
     driver.quit.assert_called_once()
+
+def test_custom_driver_path_starts_only_one_browser():
+    module, browser = execute()
+    browser.Chrome.reset_mock()
+    with patch('time.sleep'):
+        module['message_phones']([], 'test message', driver_executable_path='custom/chromedriver')
+    browser.Chrome.assert_called_once_with(
+        options=browser.ChromeOptions.return_value,
+        driver_executable_path='custom/chromedriver',
+    )
+    browser.Chrome.return_value.quit.assert_called_once()
